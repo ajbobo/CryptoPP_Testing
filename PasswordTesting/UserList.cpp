@@ -44,7 +44,7 @@ void MakeUser(string username, string password)
 		LastUser = LastUser->Next;
 	}
 
-	strcpy(LastUser->Name,username.c_str());
-	strcpy(LastUser->PasswordHash,password.c_str());
+	strcpy_s(LastUser->Name,MAX_NAME_LENGTH + 1,username.c_str());
+	strcpy_s(LastUser->PasswordHash,PASSWORD_LENGTH + 1,password.c_str());
 	LastUser->Next = NULL;
 }

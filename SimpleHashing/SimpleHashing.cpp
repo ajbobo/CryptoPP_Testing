@@ -6,6 +6,8 @@
 #include <cryptlib.h>
 #include <filters.h>
 #include <sha.h>
+#include <hex.h>
+#include <base32.h>
 #include <base64.h>
 
 #include <string>
@@ -15,41 +17,65 @@
 using namespace std;
 using namespace CryptoPP;
 
+void Hash(string &text, HashTransformation &hash)
+{
+	string res;
+	StringSource(text, true, new HashFilter(hash, new StringSink(res), false));
+	cout << hash.AlgorithmName() << " : " << res.length() << endl;
+}
+
+void HashWithEncoding(string &text, HashTransformation &hash, BufferedTransformation &encoding, string encodingname)
+{
+	string res;
+
+	encoding.Detach(new StringSink(res));
+	StringSource(text, true, new HashFilter(hash, new Redirector(encoding), false)); // The Redirector's attachment is NOT automatically deleted when the StringSource is
+	cout << hash.AlgorithmName() << " | " << encodingname << " : " << res.length() << endl;
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
-	string password;
+	string text = "ABC";
 
-	cout << "Enter the password: ";
-	cin >> password;
+	SHA sha;
+	SHA224 sha224;
+	SHA256 sha256;
+	SHA384 sha384;
+	SHA512 sha512;
 
-	// Hash the password and store the result
-	SHA512 chosen_hash;
-	string hashedstr;
-	StringSource(password, true, new HashFilter(chosen_hash, new Base64Encoder(new StringSink(hashedstr),false)));
-	//StringSource(password, true, new HashFilter(chosen_hash, new StringSink(hashedstr)));
+	HexEncoder hex;
+	Base32Encoder base32;
+	Base64Encoder base64(NULL, false, 100);
 
-	cout << "HASH: " << hashedstr << endl; // Show the hash in Base64
+	Hash(text, sha);
+	HashWithEncoding(text, sha, hex, "Hex");
+	HashWithEncoding(text, sha, base32, "Base32");
+	HashWithEncoding(text, sha, base64, "Base64");
+	cout << endl;
 
-	while (1) // There'll be a break to get out of this
-	{
-		string mystr;
-		cout << "Enter a string (or \"quit\"): ";
-		cin >> mystr;
-		if (mystr == "quit")
-			break;
+	Hash(text, sha224);
+	HashWithEncoding(text, sha224, hex, "Hex");
+	HashWithEncoding(text, sha224, base32, "Base32");
+	HashWithEncoding(text, sha224, base64, "Base64");
+	cout << endl;
 
-		// Decode the Base64 hash and concatenate the hash with the test string
-		StringSource(hashedstr,true,new Base64Decoder(new StringSink(mystr)));
-		//cout << "Test string: _" << mystr << "_" << endl;
+	Hash(text, sha256);
+	HashWithEncoding(text, sha256, hex, "Hex");
+	HashWithEncoding(text, sha256, base32, "Base32");
+	HashWithEncoding(text, sha256, base64, "Base64");
+	cout << endl;
 
-		// Check to see if the test string matched the hash
-		byte output[1];
-		word32 flags = HashVerificationFilter::HASH_AT_END | HashVerificationFilter::PUT_RESULT;
-		StringSource(mystr, true, new HashVerificationFilter(chosen_hash,new ArraySink(output, sizeof(output)),flags));
+	Hash(text, sha384);
+	HashWithEncoding(text, sha384, hex, "Hex");
+	HashWithEncoding(text, sha384, base32, "Base32");
+	HashWithEncoding(text, sha384, base64, "Base64");
+	cout << endl;
 
-		cout << "output: _" << output[0] << "_ -> " << (output[0] ? "CORRECT" : "WRONG") << endl;
-	}
-	
+	Hash(text, sha512);
+	HashWithEncoding(text, sha512, hex, "Hex");
+	HashWithEncoding(text, sha512, base32, "Base32");
+	HashWithEncoding(text, sha512, base64, "Base64");
+	cout << endl;
 
 	return 0;
 }

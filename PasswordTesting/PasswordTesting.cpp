@@ -20,7 +20,7 @@ using namespace CryptoPP;
 /***********
  * Globals *
  ***********/
-SHA chosen_hash;
+HASH chosen_hash;
 extern User *UserList;
 
 
@@ -53,6 +53,9 @@ void LoadUsers()
 
 		// Put the user in the list
 		MakeUser(username,tempstr);
+
+		tempstr.clear();
+		filestr.Pump(3); // Strip the \r\n (I'm not sure why it pumps two \r's)
 	}
 
 }
@@ -68,6 +71,7 @@ void SaveUsers()
 		for (int x = userstr.length(); x < MAX_NAME_LENGTH; x++)
 			userstr += "~"; // Add padding
 		userstr += CurUser->PasswordHash;
+		userstr += "\r\n";
 		
 		// The output file needs to be encrypted - FINISH ME
 		// Write to the file - is there a better way to do this?
@@ -93,7 +97,7 @@ void TestUser()
 
 	// Decode the hashed password and concatenate with the value to test
 	string teststring = password;
-	StringSource(TheUser->PasswordHash, true, new Base64Decoder(new StringSink(teststring)));
+	StringSource(TheUser->PasswordHash, true, new DECODER(new StringSink(teststring)));
 
 	// Test the entered value with the hash
 	byte result[1];
@@ -124,7 +128,7 @@ void AddUser()
 
 	// Generate the encoded hash of the password
 	string hash;
-	StringSource(password, true, new HashFilter(chosen_hash, new Base64Encoder(new StringSink(hash),false)));
+	StringSource(password, true, new HashFilter(chosen_hash, new ENCODER(new StringSink(hash),false)));
 
 	cout << username << "::" << hash << endl;
 	cout << " Username Length: " << username.length() << endl;
