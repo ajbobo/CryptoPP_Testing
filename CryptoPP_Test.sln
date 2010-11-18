@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleHashing", "SimpleHashing\SimpleHashing.vcproj", "{405A2B19-9C38-4B99-98EA-504BF4F27801}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PasswordTesting", "PasswordTesting\PasswordTesting.vcproj", "{084964E9-62A3-4FBE-B6A9-C8ACE58D54C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{405A2B19-9C38-4B99-98EA-504BF4F27801}.Debug|Win32.ActiveCfg = Debug|Win32
+		{405A2B19-9C38-4B99-98EA-504BF4F27801}.Debug|Win32.Build.0 = Debug|Win32
+		{405A2B19-9C38-4B99-98EA-504BF4F27801}.Release|Win32.ActiveCfg = Release|Win32
+		{405A2B19-9C38-4B99-98EA-504BF4F27801}.Release|Win32.Build.0 = Release|Win32
+		{084964E9-62A3-4FBE-B6A9-C8ACE58D54C5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{084964E9-62A3-4FBE-B6A9-C8ACE58D54C5}.Debug|Win32.Build.0 = Debug|Win32
+		{084964E9-62A3-4FBE-B6A9-C8ACE58D54C5}.Release|Win32.ActiveCfg = Release|Win32
+		{084964E9-62A3-4FBE-B6A9-C8ACE58D54C5}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
