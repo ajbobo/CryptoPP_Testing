@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="PasswordTesting"
-	ProjectGUID="{084964E9-62A3-4FBE-B6A9-C8ACE58D54C5}"
-	RootNamespace="PasswordTesting"
+	Name="AES_Test"
+	ProjectGUID="{EB0480B6-0B01-46A7-BD22-F585F292D0C1}"
+	RootNamespace="AES_Test"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -251,7 +251,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\PasswordTesting.cpp"
+				RelativePath=".\AES_Test.cpp"
 				>
 			</File>
 			<File
@@ -282,10 +282,6 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath=".\UserList.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -298,10 +294,6 @@
 			</File>
 			<File
 				RelativePath=".\targetver.h"
-				>
-			</File>
-			<File
-				RelativePath=".\UserList.h"
 				>
 			</File>
 		</Filter>
