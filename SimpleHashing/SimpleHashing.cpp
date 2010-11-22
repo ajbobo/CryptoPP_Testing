@@ -21,7 +21,7 @@ void Hash(string &text, HashTransformation &hash)
 {
 	string res;
 	StringSource(text, true, new HashFilter(hash, new StringSink(res), false));
-	cout << hash.AlgorithmName() << " : " << res.length() << endl;
+	cout << hash.AlgorithmName() << " | None : " << res.length() << endl;
 }
 
 void HashWithEncoding(string &text, HashTransformation &hash, BufferedTransformation &encoding, string encodingname)
@@ -36,6 +36,7 @@ void HashWithEncoding(string &text, HashTransformation &hash, BufferedTransforma
 int _tmain(int argc, _TCHAR* argv[])
 {
 	string text = "ABC";
+	byte alphabet[4] = {'A', 'B', 'C', 'D'};
 
 	SHA sha;
 	SHA224 sha224;
@@ -46,33 +47,39 @@ int _tmain(int argc, _TCHAR* argv[])
 	HexEncoder hex;
 	Base32Encoder base32;
 	Base64Encoder base64(NULL, false, 100);
+	BaseN_Encoder base4(alphabet,2);
 
 	Hash(text, sha);
 	HashWithEncoding(text, sha, hex, "Hex");
+	HashWithEncoding(text, sha, base4, "Base4");
 	HashWithEncoding(text, sha, base32, "Base32");
 	HashWithEncoding(text, sha, base64, "Base64");
 	cout << endl;
 
 	Hash(text, sha224);
 	HashWithEncoding(text, sha224, hex, "Hex");
+	HashWithEncoding(text, sha224, base4, "Base4");
 	HashWithEncoding(text, sha224, base32, "Base32");
 	HashWithEncoding(text, sha224, base64, "Base64");
 	cout << endl;
 
 	Hash(text, sha256);
 	HashWithEncoding(text, sha256, hex, "Hex");
+	HashWithEncoding(text, sha256, base4, "Base4");
 	HashWithEncoding(text, sha256, base32, "Base32");
 	HashWithEncoding(text, sha256, base64, "Base64");
 	cout << endl;
 
 	Hash(text, sha384);
 	HashWithEncoding(text, sha384, hex, "Hex");
+	HashWithEncoding(text, sha384, base4, "Base4");
 	HashWithEncoding(text, sha384, base32, "Base32");
 	HashWithEncoding(text, sha384, base64, "Base64");
 	cout << endl;
 
 	Hash(text, sha512);
 	HashWithEncoding(text, sha512, hex, "Hex");
+	HashWithEncoding(text, sha512, base4, "Base4");
 	HashWithEncoding(text, sha512, base32, "Base32");
 	HashWithEncoding(text, sha512, base64, "Base64");
 	cout << endl;
