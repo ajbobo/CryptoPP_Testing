@@ -13,37 +13,12 @@
 using namespace std;
 using namespace CryptoPP;
 
-
-int _tmain(int argc, _TCHAR* argv[])
+void Hashing()
 {
-	/*
 	string plainstr;
 	cout << "Enter a string to hash: ";
 	cin >> plainstr;
 
-	// ENCODING/DECODING
-	int bitsperchar = 2; // 1-7 are valid values
-	int numchars = (int)pow(2.0,bitsperchar);
-	const byte alphabet[] = "0123";//456789ABCDEFGHIJKLMNOPQRSTUV"; // This needs to have numchars (2^bitsperchar) unique characters in it
-	int lookup[256];
-	BaseN_Decoder::InitializeDecodingLookupArray(lookup,alphabet,numchars,false);
-	
-	int len = (int)ceil(plainstr.length() * 8.0 / bitsperchar) + 1; // Calculate the bytes required for the translation, plus a null-terminator
-	byte *hashstr = new byte[len]; // For some reason, using a string here causes a crash during deallocation when connected to the Crypto++ DLL
-	memset(hashstr,0,len);
-	StringSource(plainstr, true, new BaseN_Encoder(alphabet, bitsperchar, new ArraySink(hashstr,len),0));
-	cout << hashstr << endl;
-	
-	int shortlen = plainstr.length() + 1;
-	byte *endres = new byte[shortlen];
-	memset(endres,0,shortlen);
-	ArraySource(hashstr, len, true, new BaseN_Decoder(lookup, bitsperchar, new ArraySink(endres,shortlen)));
-	cout << endres << endl;
-	
-	delete[] hashstr;
-	delete[] endres;
-
-	// SHA HASHING/VERIFYING
 	SHA hash;
 	while (1)
 	{
@@ -71,9 +46,39 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		delete[] hashstr;
 	}
-	*/
+}
 
-	// AES ENCRYPTING/DECRYPTING
+void Encoding()
+{
+	string plainstr;
+	cout << "Enter a string to encode: ";
+	cin >> plainstr;
+
+	// ENCODING/DECODING
+	int bitsperchar = 2; // 1-7 are valid values
+	int numchars = (int)pow(2.0,bitsperchar);
+	const byte alphabet[] = "0123";//456789ABCDEFGHIJKLMNOPQRSTUV"; // This needs to have numchars (2^bitsperchar) unique characters in it
+	int lookup[256];
+	BaseN_Decoder::InitializeDecodingLookupArray(lookup,alphabet,numchars,false);
+	
+	int len = (int)ceil(plainstr.length() * 8.0 / bitsperchar) + 1; // Calculate the bytes required for the translation, plus a null-terminator
+	byte *hashstr = new byte[len]; // For some reason, using a string here causes a crash during deallocation when connected to the Crypto++ DLL
+	memset(hashstr,0,len);
+	StringSource(plainstr, true, new BaseN_Encoder(alphabet, bitsperchar, new ArraySink(hashstr,len),0));
+	cout << hashstr << endl;
+	
+	int shortlen = plainstr.length() + 1;
+	byte *endres = new byte[shortlen];
+	memset(endres,0,shortlen);
+	ArraySource(hashstr, len, true, new BaseN_Decoder(lookup, bitsperchar, new ArraySink(endres,shortlen)));
+	cout << endres << endl;
+	
+	delete[] hashstr;
+	delete[] endres;
+}
+
+void Encrypting()
+{
 	string inputname = "input.txt";
 	string outputname = "output.txt";
 	string encryptedname = "encrypted.txt";
@@ -97,6 +102,36 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	CTR_Mode<AES>::Decryption decrypt((const byte*)key, KEY_LEN, (const byte*)key);
 	FileSource(encryptedname.c_str(), true, new HexDecoder(new StreamTransformationFilter(decrypt, new FileSink(outputname.c_str(), false))), false);
+}
+
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	bool done = false;
+	int choice;
+	while (!done)
+	{
+		cout << "Available options:" << endl;
+		cout << " 1) Encoding" << endl;
+		cout << " 2) Hashing" << endl;
+		cout << " 3) AES Encrypting" << endl;
+		cout << " 4) Quit" << endl;
+		cout << "Select an operation: ";
+		cin >> choice;
+
+		switch (choice)
+		{
+		case 1: Encoding(); break;
+		case 2: Hashing(); break;
+		case 3: Encrypting(); break;
+		case 4: done = true; break;
+		default:
+			cout << "Invalid option. Enter 1-4" << endl;
+			break;
+		}
+
+		cout << endl;
+	}
 
 	return 0;
 }
