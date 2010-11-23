@@ -16,6 +16,7 @@ using namespace CryptoPP;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	/*
 	string plainstr;
 	cout << "Enter a string to hash: ";
 	cin >> plainstr;
@@ -70,6 +71,32 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		delete[] hashstr;
 	}
+	*/
+
+	// AES ENCRYPTING/DECRYPTING
+	string inputname = "input.txt";
+	string outputname = "output.txt";
+	string encryptedname = "encrypted.txt";
+
+#define KEY_LEN AES::DEFAULT_KEYLENGTH * 2
+	char key[KEY_LEN + 1]; // Needs a null-terminator to be deallocated correctly, but don't pass the terminator to AES
+	cout << "Enter the encryption key (max length: " << KEY_LEN << "): ";
+	cin >> key;
+	int len = strlen(key);
+	if (len < KEY_LEN)
+		memset(&key[len],1,KEY_LEN - len); // Add padding
+	key[KEY_LEN] = 0;
+	
+	// Clear out the two destination files - is there a better way to do it?
+	StringSource("",true,new FileSink(outputname.c_str(),false));
+	StringSource("",true,new FileSink(encryptedname.c_str(),false));
+
+	// I need to use the Encoder because there seem to be characters in the raw encryption that screw things up when they are read from a file (newlines, etc)
+	CTR_Mode<AES>::Encryption encrypt((const byte*)key, KEY_LEN, (const byte*)key); // Using the Key as the Initialization Vector as well
+	FileSource(inputname.c_str(), true, new StreamTransformationFilter(encrypt, new HexEncoder(new FileSink(encryptedname.c_str(), false), true, 50, "\n")), false);
+
+	CTR_Mode<AES>::Decryption decrypt((const byte*)key, KEY_LEN, (const byte*)key);
+	FileSource(encryptedname.c_str(), true, new HexDecoder(new StreamTransformationFilter(decrypt, new FileSink(outputname.c_str(), false))), false);
 
 	return 0;
 }
