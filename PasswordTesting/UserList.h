@@ -18,6 +18,8 @@ using namespace std;
 
 /**************************************************************************
  The password length is based on the hashing algorithm and encoding scheme.
+ length = ceil( DigestSize * 8 / BitsPerCharacter )
+ Base64 rounds up to the nearest multiple of 4
  Here are the possible values:
           No Encoding | Hex  | Base32 | Base64 |
  SHA-1  |     20      |  40  |   32   |   28   |
