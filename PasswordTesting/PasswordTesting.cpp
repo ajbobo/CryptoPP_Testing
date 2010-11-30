@@ -9,6 +9,8 @@
 #include <sha.h>
 #include <base64.h>
 #include <files.h>
+#include <modes.h>
+#include <aes.h>
 
 #include <iostream>
 #include <string>
@@ -23,17 +25,21 @@ using namespace CryptoPP;
 HASH chosen_hash;
 extern User *UserList;
 
+#define AES_KEY_LEN AES::DEFAULT_KEYLENGTH
+const byte aeskey[] = "HelloThereOneTwo"; // 16 characters = 128 bits
+
 
 void LoadUsers()
 {
 	User *LastUser = FindLastUser();
 
 	string fullfile;
-	FileSource infile("passwords.txt", true, new StringSink(fullfile)); // decrypt the file while importing it - FINISH ME
+	CTR_Mode<AES>::Decryption decrypt(aeskey, AES_KEY_LEN, aeskey); // Using the key as the initialization vector
+	FileSource infile("passwords.txt", true, new DECODER(new StreamTransformationFilter(decrypt, new StringSink(fullfile)))); // decrypt the file while importing it
 
 	// Parse the decrypted file
 	string tempstr;
-	StringSource filestr(fullfile,false,new StringSink(tempstr));
+	StringSource filestr(fullfile, false, new StringSink(tempstr)); // false = do not read the string yet
 	while (1)
 	{
 		// Get the next username
@@ -55,14 +61,14 @@ void LoadUsers()
 		MakeUser(username,tempstr);
 
 		tempstr.clear();
-		filestr.Pump(3); // Strip the \r\n (I'm not sure why it pumps two \r's)
+		filestr.Pump(2); // Strip the \r\n
 	}
-
 }
 
 void SaveUsers()
 {
-	FileSink outfile("passwords.txt",false);
+	CTR_Mode<AES>::Encryption encrypt(aeskey, AES_KEY_LEN, aeskey); // Using the key as the initialization vector
+	StreamTransformationFilter outfile(encrypt, new ENCODER(new FileSink("passwords.txt",false)));
 
 	for (User *CurUser = UserList; CurUser != NULL; CurUser = CurUser->Next)
 	{
@@ -73,10 +79,8 @@ void SaveUsers()
 		userstr += CurUser->PasswordHash;
 		userstr += "\r\n";
 		
-		// The output file needs to be encrypted - FINISH ME
-		// Write to the file - is there a better way to do this?
-		for (size_t x = 0; x < userstr.length(); x++)
-			outfile.Put((byte)userstr[x]);
+		// Write to the encrypted output file
+		outfile.Put((const byte*)userstr.c_str(), userstr.length());
 	}
 }
 
