@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AES_Test", "AES_Test\AES_Te
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DLL_Test", "DLL_Test\DLL_Test.vcproj", "{445D3C7A-F862-4C10-B438-E2CBF8E1153D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Zipping", "Zipping\Zipping.vcproj", "{AC45DA08-2FFA-4E4A-AB0C-189D73E6A9DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +33,10 @@ Global
 		{445D3C7A-F862-4C10-B438-E2CBF8E1153D}.Debug|Win32.Build.0 = Debug|Win32
 		{445D3C7A-F862-4C10-B438-E2CBF8E1153D}.Release|Win32.ActiveCfg = Release|Win32
 		{445D3C7A-F862-4C10-B438-E2CBF8E1153D}.Release|Win32.Build.0 = Release|Win32
+		{AC45DA08-2FFA-4E4A-AB0C-189D73E6A9DD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AC45DA08-2FFA-4E4A-AB0C-189D73E6A9DD}.Debug|Win32.Build.0 = Debug|Win32
+		{AC45DA08-2FFA-4E4A-AB0C-189D73E6A9DD}.Release|Win32.ActiveCfg = Release|Win32
+		{AC45DA08-2FFA-4E4A-AB0C-189D73E6A9DD}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
