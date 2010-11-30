@@ -68,7 +68,7 @@ void LoadUsers()
 void SaveUsers()
 {
 	CTR_Mode<AES>::Encryption encrypt(aeskey, AES_KEY_LEN, aeskey); // Using the key as the initialization vector
-	StreamTransformationFilter outfile(encrypt, new ENCODER(new FileSink("passwords.txt",false)));
+	StreamTransformationFilter outfile(encrypt, new ENCODER(new FileSink("passwords.txt", false)));
 
 	for (User *CurUser = UserList; CurUser != NULL; CurUser = CurUser->Next)
 	{
@@ -106,7 +106,7 @@ void TestUser()
 	// Test the entered value with the hash
 	byte result[1];
 	word32 flags = HashVerificationFilter::HASH_AT_END|HashVerificationFilter::PUT_RESULT;
-	StringSource(teststring, true, new HashVerificationFilter(chosen_hash,new ArraySink(result, sizeof(result)),flags));
+	StringSource(teststring, true, new HashVerificationFilter(chosen_hash, new ArraySink(result, sizeof(result)), flags));
 
 	if (result[0] != 0)
 		cout << "CORRECT" << endl;
@@ -132,7 +132,7 @@ void AddUser()
 
 	// Generate the encoded hash of the password
 	string hash;
-	StringSource(password, true, new HashFilter(chosen_hash, new ENCODER(new StringSink(hash),false)));
+	StringSource(password, true, new HashFilter(chosen_hash, new ENCODER(new StringSink(hash), false)));
 
 	cout << username << "::" << hash << endl;
 	cout << " Username Length: " << username.length() << endl;
