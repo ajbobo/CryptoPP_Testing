@@ -21,12 +21,13 @@ using namespace std;
  length = ceil( DigestSize * 8 / BitsPerCharacter )
  Base64 rounds up to the nearest multiple of 4
  Here are the possible values:
-          No Encoding | Hex  | Base32 | Base64 |
- SHA-1  |     20      |  40  |   32   |   28   |
- SHA224 |     28      |  56  |   45   |   40   |
- SHA256 |     32      |  64  |   52   |   44   |
- SHA384 |     48      |  96  |   77   |   64   |
- SHA512 |     64      |  128 |   103  |   88   |
+        | No Encoding |  Hex   | Base32 | Base64 |
+        |   8 bits    | 4 bits | 5 bits | 6 bits |
+ SHA-1  |     20      |   40   |   32   |   28   |
+ SHA224 |     28      |   56   |   45   |   40   |
+ SHA256 |     32      |   64   |   52   |   44   |
+ SHA384 |     48      |   96   |   77   |   64   |
+ SHA512 |     64      |   128  |   103  |   88   |
  **************************************************************************/
 struct User
 {
