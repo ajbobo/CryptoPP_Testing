@@ -35,7 +35,7 @@ void LoadUsers()
 
 	string fullfile;
 	CTR_Mode<AES>::Decryption decrypt(aeskey, AES_KEY_LEN, aeskey); // Using the key as the initialization vector
-	FileSource infile("passwords.txt", true, new DECODER(new StreamTransformationFilter(decrypt, new StringSink(fullfile)))); // decrypt the file while importing it
+	FileSource infile("passwords.txt", true, new DECODER(new StreamTransformationFilter(decrypt, new StringSink(fullfile))), false); // decrypt the file while importing it
 
 	// Parse the decrypted file
 	string tempstr;
