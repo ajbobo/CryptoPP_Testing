@@ -9,10 +9,6 @@
 
 using namespace std;
 
-#define HASH SHA
-#define ENCODER Base64Encoder
-#define DECODER Base64Decoder
-
 #define MAX_NAME_LENGTH 10
 #define PASSWORD_LENGTH 28
 

@@ -22,7 +22,7 @@ using namespace CryptoPP;
 /***********
  * Globals *
  ***********/
-HASH chosen_hash;
+SHA chosen_hash;
 extern User *UserList;
 
 #define AES_KEY_LEN AES::DEFAULT_KEYLENGTH
@@ -35,7 +35,7 @@ void LoadUsers()
 
 	string fullfile;
 	CTR_Mode<AES>::Decryption decrypt(aeskey, AES_KEY_LEN, aeskey); // Using the key as the initialization vector
-	FileSource infile("passwords.txt", true, new DECODER(new StreamTransformationFilter(decrypt, new StringSink(fullfile))), false); // decrypt the file while importing it
+	FileSource infile("passwords.txt", true, new Base64Decoder(new StreamTransformationFilter(decrypt, new StringSink(fullfile))), false); // decrypt the file while importing it
 
 	// Parse the decrypted file
 	string tempstr;
@@ -68,7 +68,7 @@ void LoadUsers()
 void SaveUsers()
 {
 	CTR_Mode<AES>::Encryption encrypt(aeskey, AES_KEY_LEN, aeskey); // Using the key as the initialization vector
-	StreamTransformationFilter outfile(encrypt, new ENCODER(new FileSink("passwords.txt", false)));
+	StreamTransformationFilter outfile(encrypt, new Base64Encoder(new FileSink("passwords.txt", false)));
 
 	for (User *CurUser = UserList; CurUser != NULL; CurUser = CurUser->Next)
 	{
@@ -101,7 +101,7 @@ void TestUser()
 
 	// Decode the hashed password and concatenate with the value to test
 	string teststring = password;
-	StringSource(TheUser->PasswordHash, true, new DECODER(new StringSink(teststring)));
+	StringSource(TheUser->PasswordHash, true, new Base64Decoder(new StringSink(teststring)));
 
 	// Test the entered value with the hash
 	byte result[1];
@@ -132,7 +132,7 @@ void AddUser()
 
 	// Generate the encoded hash of the password
 	string hash;
-	StringSource(password, true, new HashFilter(chosen_hash, new ENCODER(new StringSink(hash), false)));
+	StringSource(password, true, new HashFilter(chosen_hash, new Base64Encoder(new StringSink(hash), false)));
 
 	cout << username << "::" << hash << endl;
 	cout << " Username Length: " << username.length() << endl;
